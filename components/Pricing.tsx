@@ -17,7 +17,12 @@ const plans = [
       { text: "E-commerce Integration", included: false },
       { text: "Admin Dashboard", included: false },
     ],
-    accent: "text-accent-cyan",
+    themeBg: "bg-accent-cyan text-black",
+    themeText: "text-accent-cyan",
+    themeIconBg: "bg-accent-cyan/20 text-accent-cyan",
+    themeFold: "border-cyan-700",
+    // 🚀 Solid Cyan Button
+    themeButton: "bg-accent-cyan text-black border-accent-cyan hover:shadow-lg hover:shadow-accent-cyan/20",
     badge: "Active",
   },
   {
@@ -33,7 +38,12 @@ const plans = [
       { text: "E-commerce & Payments", included: true },
       { text: "Admin Dashboard", included: true },
     ],
-    accent: "text-[#8FFF00]",
+    themeBg: "bg-[#8FFF00] text-black",
+    themeText: "text-[#8FFF00]",
+    themeIconBg: "bg-[#8FFF00]/20 text-[#8FFF00]",
+    themeFold: "border-[#5eab00]",
+    // 🚀 Solid Green Button
+    themeButton: "bg-[#8FFF00] text-black border-[#8FFF00] hover:shadow-lg hover:shadow-[#8FFF00]/20",
     badge: "Save 18%",
     highlight: true,
   },
@@ -50,7 +60,12 @@ const plans = [
       { text: "API Integrations", included: true },
       { text: "Dedicated Manager", included: true },
     ],
-    accent: "text-accent-amber",
+    themeBg: "bg-accent-amber text-black",
+    themeText: "text-accent-amber",
+    themeIconBg: "bg-accent-amber/20 text-accent-amber",
+    themeFold: "border-amber-600",
+    // 🚀 Solid Amber Button
+    themeButton: "bg-accent-amber text-black border-accent-amber hover:shadow-lg hover:shadow-accent-amber/20",
     badge: "Popular",
   },
 ];
@@ -77,7 +92,7 @@ export default function Pricing() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 items-start mt-4">
           {plans.map((plan, index) => (
             <motion.div
               key={index}
@@ -85,7 +100,7 @@ export default function Pricing() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className={cn(
-                "relative flex flex-col p-8 rounded-[2.5rem] border transition-all duration-500",
+                "relative flex flex-col p-8 pt-16 rounded-[2.5rem] border transition-all duration-500",
                 "bg-white/40 dark:bg-surface/30",
                 "box-shadow-2xl shadow-black/5 dark:shadow-none",
                 plan.highlight 
@@ -93,66 +108,79 @@ export default function Pricing() {
                   : "border-border-subtle"
               )}
             >
-              {/* Badge Wrapper */}
-              <div className="flex justify-between items-center mb-8">
-                <span className="text-[11px] font-bold text-red-500/80 dark:text-red-400 uppercase tracking-[0.2em]">Tier {index + 1}</span>
-                <div className="relative">
-                  <div className="relative px-3 py-1 rounded-full border border-border-subtle bg-surface/5 backdrop-blur-md">
-                    <span className={cn("text-[10px] font-bold uppercase tracking-wider", plan.accent)}>
-                      {plan.badge}
-                    </span>
-                  </div>
+              
+              {/* 🚀 THE 3D RIBBON WRAPPER */}
+              <div className="absolute top-6 -left-3 z-20">
+                <div className={cn(
+                  "px-4 py-2 rounded-r-lg shadow-lg relative z-10",
+                  plan.themeBg
+                )}>
+                  <span className="text-[11px] font-bold uppercase tracking-[0.2em]">
+                    {plan.name}
+                  </span>
+                </div>
+                <div 
+                  className={cn(
+                    "absolute top-full left-0 w-0 h-0 border-t-[10px] border-l-[12px] border-l-transparent z-0",
+                    plan.themeFold
+                  )} 
+                />
+              </div>
+
+              {/* Status Badge */}
+              <div className="absolute top-6 right-6 z-20">
+                <div className="relative px-3 py-1 rounded-full border border-border-subtle bg-surface/5 backdrop-blur-md shadow-sm">
+                  <span className={cn("text-[10px] font-bold uppercase tracking-wider", plan.themeText)}>
+                    {plan.badge}
+                  </span>
                 </div>
               </div>
               
-              <div className="relative z-10">
-                <h3 className="text-2xl font-bold font-clash text-text-primary mb-4">{plan.name}</h3>
-                
-                <div className="mb-8">
-                  <span className="text-xs text-text-secondary/50 line-through block mb-1">{plan.oldPrice}</span>
-                  <span className="text-4xl font-bold text-text-primary tracking-tighter">{plan.price}</span>
-                </div>
-
-                <p className="text-sm text-text-secondary mb-10 leading-relaxed font-jakarta font-medium opacity-80">
-                  {plan.desc}
-                </p>
-
-                <div className="space-y-4 mb-12">
-                  {plan.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-4">
-                      {feature.included ? (
-                        <div className={cn("p-1 rounded-full bg-current/10", plan.accent)}>
-                          <Check size={12} className="stroke-[3]" />
-                        </div>
-                      ) : (
-                        <div className="p-1 rounded-full bg-text-secondary/10">
-                          <X size={12} className="text-text-secondary/30" />
-                        </div>
-                      )}
-                      <span className={cn(
-                        "text-[12px] font-jakarta font-medium transition-colors",
-                        feature.included ? "text-text-primary/90" : "text-text-secondary/40"
-                      )}>
-                        {feature.text}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <button 
-                  type="button"
-                  onClick={handleConsultClick}
-                  className={cn(
-                    "group w-full py-5 rounded-2xl font-bold text-[13px] transition-all flex items-center justify-center gap-2 border cursor-pointer active:scale-95",
-                    plan.highlight 
-                      ? "bg-accent-cyan text-black border-accent-cyan hover:shadow-lg hover:shadow-accent-cyan/20" 
-                      : "bg-transparent text-text-primary border-border-subtle hover:bg-surface/50"
-                  )}
-                >
-                  Consult Now
-                  <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-                </button>
+              {/* Content Area */}
+              <div className="relative z-10 mt-6 mb-8">
+                <span className="text-xs text-text-secondary/50 line-through block mb-1">{plan.oldPrice}</span>
+                <span className="text-4xl font-bold font-clash text-text-primary tracking-tighter">{plan.price}</span>
               </div>
+
+              <p className="text-sm text-text-secondary mb-10 leading-relaxed font-jakarta font-medium opacity-80">
+                {plan.desc}
+              </p>
+
+              <div className="space-y-4 mb-12 flex-grow">
+                {plan.features.map((feature, idx) => (
+                  <div key={idx} className="flex items-center gap-4">
+                    {feature.included ? (
+                      <div className={cn("p-1.5 rounded-full", plan.themeIconBg)}>
+                        <Check size={12} className="stroke-[3]" />
+                      </div>
+                    ) : (
+                      <div className="p-1.5 rounded-full bg-text-secondary/10">
+                        <X size={12} className="text-text-secondary/30" />
+                      </div>
+                    )}
+                    <span className={cn(
+                      "text-[12px] font-jakarta font-medium transition-colors",
+                      feature.included ? "text-text-primary/90" : "text-text-secondary/40"
+                    )}>
+                      {feature.text}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* 🚀 THE FIXED BUTTON */}
+              <button 
+                type="button"
+                onClick={handleConsultClick}
+                className={cn(
+                  "group w-full py-5 rounded-2xl font-bold text-[13px] uppercase tracking-widest transition-all flex items-center justify-center gap-3 border cursor-pointer active:scale-95",
+                  // 🚀 Applies the specific color permanently to every button
+                  plan.themeButton
+                )}
+              >
+                Secure Spot
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+              </button>
             </motion.div>
           ))}
         </div>
